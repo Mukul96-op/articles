@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{%block banner%}
+<div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="{{article.picture.url}}" class="d-block w-100" alt="..." style="height: 500px;">
+        </div>
+    </div>
+</div>
+
+<form id="favoriteform" method="POST" action="">
+    {% csrf_token%}
+
+    <a href="javascript:void()" onclick="document.getElementById('favoriteform').submit();" {% if fav is True %}
+        style="float: right;  color:red" {% else %}style="float: right;  color: grey" {%endif%} data-bs-toggle="tooltip"
+        data-bs-placement="left" title="{% if fav is True %}Add to Favorite {% else %} Remove{% endif %}">
+
+        <span class="material-icons" style="font-size: 56px; ">
+            favorite
+        </span>
+    </a>
+</form>
+
+{%endblock%}
+
+{%block content%}
+<br>
+<div class="row">
+    <div class=" offset-2 col-md-8">
+        <div class="card">
+            <ul class="list-group ">
+                <li class="list-group-item ">
+                    <span class="material-icons circle">account_circle</span>
+                    <span style="font-size: 20px; font-weight:bold;" class="title">Category:</span>
+                    <span style="font-size: 18px;" class="title">{{article.category}}</span>
+                    <span class="secondary-content">{{article.publication_date}}</span>
+                    <p>{{article.author}}</p>
+                </li>
+            </ul>
+            <br>
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="header">{{article.title}}</h2>
+                    {{article.content}}
+                    <hr>
+
+                    <span class="card-title">Tags:</span>
+                    {% for tag in article.tags.all %}
+                    <span class="badge rounded-pill bg-secondary"> <a href="{{tag.get_absolute_url}}"
+                            class="text-decoration-none text-dark"> {{tag.title}} </a></span>
+                    {%endfor%}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{%endblock%}
